@@ -10,6 +10,4 @@ public class ReparacionesService {
     @Autowired
     ReparacionesRepository reparacionesRepository;
 
-    @Autowired
-    ReparacionesService reparacionesService;
 }
