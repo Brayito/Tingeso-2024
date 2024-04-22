@@ -2,7 +2,7 @@ package com.example.demo.controllers;
 
 
 
-import com.example.demo.services.VehiculosService;
+import com.example.demo.services.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping
-public class VehiculosController {
+public class VehiculoController {
     @Autowired
-    VehiculosService vehiculosService;
+    VehiculoService vehiculoService;
 
     @GetMapping("/mensaje")
     public ResponseEntity<String> obtenerMensaje(){

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -13,17 +16,19 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReparacionesEntity {
+public class ReparacionEntity {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long Id;
-    private Date fecha_ingreso;
-    private Date hora_ingreso;
+
+    @Column(name = "num_patente")
+    private String num_patente;
+
+    private LocalDate fecha_ingreso;
+    private LocalTime hora_ingreso;
     private String tipo_reparacion;
-    private Integer monto_total_reparacion;
-    private Date fecha_salida;
-    private Date hora_salida;
-    private Date fecha_retiro_vehiculo;
-    private Date hora_retiro_vehiculo;
+    private double monto_total_reparacion;
+    private LocalDateTime fecha_salida;
+    private LocalDateTime fecha_retiro_vehiculo;
 }
