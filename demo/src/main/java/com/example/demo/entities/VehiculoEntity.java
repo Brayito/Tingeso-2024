@@ -17,6 +17,7 @@ public class VehiculoEntity {
     @Column(unique = true, nullable = false)
     private Long Id;
 
+
     @Column(unique = true, nullable = false)
     private String num_patente;
 
