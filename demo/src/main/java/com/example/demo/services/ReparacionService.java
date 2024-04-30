@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 @Service
 public class ReparacionService {
@@ -23,18 +24,35 @@ public class ReparacionService {
 
 
 
-    public ReparacionEntity guardarReparacion(String num_patente, LocalDate fecha_ingreso, LocalTime hora_ingreso, double monto_base, LocalDateTime fecha_salida, LocalDateTime fecha_retiro_vehiculo) throws Exception{
-        VehiculoEntity vehiculo = vehiculoService.obtenerVehiculoPorPatente(num_patente);
-        if (vehiculo == null){
-            throw new RuntimeException("No se puede registrar la reparación: Vehículo no encontrado con la patente " + num_patente);
-        }
-        double descuentos = calcularDescuentos(monto_base, fecha_ingreso, hora_ingreso, vehiculo.getNum_reparaciones(), vehiculo.getTipo_motor());
-        double recargos = calcularRecargos(monto_base,vehiculo.getKilometraje(),vehiculo.getAno_fabricacion(), vehiculo.getTipo_vehiculo(), fecha_salida, fecha_retiro_vehiculo);
-        double costo_total = (monto_base + recargos - descuentos) * 1.19;
-
-        ReparacionEntity reparacion = new ReparacionEntity();
-        reparacion.setMonto_total_reparacion(costo_total);
+    public ReparacionEntity guardarReparacion(ReparacionEntity reparacion){
         return reparacionRepository.save(reparacion);
+    }
+
+    public ReparacionEntity actualizarReparacion(ReparacionEntity reparacion){
+        return reparacionRepository.save(reparacion);
+    }
+
+    public boolean eliminarReparacion(Long id) throws Exception{
+        try {
+            reparacionRepository.deleteById(id);
+            return true;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+
+    public ReparacionEntity obtenerReparacionesPorPatente(String num_patente) throws Exception{
+        ReparacionEntity reparacion = reparacionRepository.findBynum_patente(num_patente);
+        return reparacion;
+    }
+
+    public ReparacionEntity obtenerReparacionPorId(Long Id) throws Exception{
+        return reparacionRepository.findById(Id).get();
+    }
+
+    public ArrayList<ReparacionEntity> obtenerReparaciones(){
+        return (ArrayList<ReparacionEntity>) reparacionRepository.findAll();
     }
 
 

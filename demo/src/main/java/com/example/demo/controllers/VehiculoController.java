@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/autofix/vehiculos")
-@CrossOrigin("*")
 public class VehiculoController {
     @Autowired
     VehiculoService vehiculoService;
@@ -27,8 +27,8 @@ public class VehiculoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VehiculoEntity> obtenerVehiculoPorId(@PathVariable Long Id) throws Exception {
-        VehiculoEntity vehiculo = vehiculoService.obtenerVehiculoPorId(Id);
+    public ResponseEntity<VehiculoEntity> obtenerVehiculoPorId(@PathVariable Long id) throws Exception {
+        VehiculoEntity vehiculo = vehiculoService.obtenerVehiculoPorId(id);
         return ResponseEntity.ok(vehiculo);
     }
 
