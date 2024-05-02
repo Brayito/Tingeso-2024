@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+
   nginx-backend:
     image: nginx:latest
     container_name: autofix-nginx-backend-container
@@ -7,7 +8,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./backend.conf:/etx/nginx/nginx.conf
+      - ./backend.conf:/etc/nginx/nginx.conf
     networks:
       - autofix-backend-network
     depends_on:
@@ -22,14 +23,15 @@ services:
     ports:
       - 8070:8070
     volumes:
-      - ./frontend.conf:/etx/nginx/nginx.conf
+      - ./frontend.conf:/etc/nginx/nginx.conf
     networks:
       - autofix-frontend-network
     depends_on:
       - autofix-frontend1
       - autofix-frontend2
       - autofix-frontend3
-    
+
+
   mysql:
     image: brayito/autofix-mysql
     container_name: autofix-mysql-container
@@ -37,8 +39,7 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - db-mysql
-    
+      - db-mysql:/var/lib/mysql
     ports:
       - 3306:3306
     networks:
@@ -100,7 +101,6 @@ services:
     depends_on:
       - mysql
 
-
   autofix-frontend1:
     image: brayito/autofix-frontend
     container_name: autofix-frontend-container1
@@ -133,9 +133,10 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-  volumes:
-      db-mysql
 
-  networks:
-    autofix-backend-network:
-    autofix-frontend-network:
+volumes:
+  db-mysql:
+
+networks:
+  autofix-backend-network:
+  autofix-frontend-network:
