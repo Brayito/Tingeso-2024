@@ -134,8 +134,8 @@ services:
       restart_policy:
         condition: on-failure
   volumes:
-    db-mysql
+      db-mysql
 
   networks:
-    autofix-frontend-network:
+    autofix-backend-network:
     autofix-frontend-network:
