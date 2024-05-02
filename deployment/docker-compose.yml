@@ -1,0 +1,141 @@
+version: "3.8"
+services:
+  nginx-backend:
+    image: nginx:latest
+    container_name: autofix-nginx-backend-container
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./backend.conf:/etx/nginx/nginx.conf
+    networks:
+      - autofix-backend-network
+    depends_on:
+      - autofix-backend1
+      - autofix-backend2
+      - autofix-backend3
+
+  nginx-frontend:
+    image: nginx:latest
+    container_name: autofix-nginx-frontend-container
+    restart: always
+    ports:
+      - 8070:8070
+    volumes:
+      - ./frontend.conf:/etx/nginx/nginx.conf
+    networks:
+      - autofix-frontend-network
+    depends_on:
+      - autofix-frontend1
+      - autofix-frontend2
+      - autofix-frontend3
+    
+  mysql:
+    image: brayito/autofix-mysql
+    container_name: autofix-mysql-container
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - db-mysql
+    
+    ports:
+      - 3306:3306
+    networks:
+      - autofix-backend-network
+    environment:
+      MYSQL_ROOT_PASSWORD: brayito
+
+  autofix-backend1:
+    image: brayito/autofix-backend
+    container_name: autofix-backend-container1
+    ports:
+      - 8091:8090
+    environment:
+      DB_HOST: autofix-mysql-container
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: brayito
+    networks:
+      - autofix-backend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql
+
+  autofix-backend2:
+    image: brayito/autofix-backend
+    container_name: autofix-backend-container2
+    ports:
+      - 8092:8090
+    environment:
+      DB_HOST: autofix-mysql-container
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: brayito
+    networks:
+      - autofix-backend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql
+
+  autofix-backend3:
+    image: brayito/autofix-backend
+    container_name: autofix-backend-container3
+    ports:
+      - 8093:8090
+    environment:
+      DB_HOST: autofix-mysql-container
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: brayito
+    networks:
+      - autofix-backend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql
+
+
+  autofix-frontend1:
+    image: brayito/autofix-frontend
+    container_name: autofix-frontend-container1
+    ports:
+      - 3001:3000
+    networks:
+      - autofix-frontend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  autofix-frontend2:
+    image: brayito/autofix-frontend
+    container_name: autofix-frontend-container2
+    ports:
+      - 3002:3000
+    networks:
+      - autofix-frontend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  autofix-frontend3:
+    image: brayito/autofix-frontend
+    container_name: autofix-frontend-container3
+    ports:
+      - 3003:3000
+    networks:
+      - autofix-frontend-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+  volumes:
+    db-mysql
+
+  networks:
+    autofix-frontend-network:
+    autofix-frontend-network:
