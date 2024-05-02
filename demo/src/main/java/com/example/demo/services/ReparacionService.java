@@ -56,55 +56,60 @@ public class ReparacionService {
     }
 
 
-    private double calcularDescuentos(VehiculoEntity vehiculo) {
+    public double calcularDescuentos(ReparacionEntity reparacion) throws Exception {
 
         double descuentoTotal = 0;
 
         // (Revisar si se puede usar el num de reparaciones sin definir en entidad vehiculo, sino buscando todas las reparaciones de una patente especifica)
         // Descuento por num de reparaciones
-        switch (vehiculo.getTipo_motor()) {
+
+
+        Integer num_reparaciones_vehiculo = vehiculoService.obtenerVehiculoPorPatente(reparacion.getNum_patente()).getNum_reparaciones();
+        String tipo_motor_vehiculo = vehiculoService.obtenerVehiculoPorPatente(reparacion.getNum_patente()).getTipo_motor();
+
+        switch (tipo_motor_vehiculo) {
             case "Gasolina" -> {
-                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.05;
-                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.10;
-                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.15;
-                } else {
-                    descuentoTotal = descuentoTotal + monto_base * 0.20;
+                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.05;
+                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.10;
+                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.15;
+                } else if (num_reparaciones_vehiculo > 9){
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.20;
                 }
             }
-            case "Diésel" -> {
-                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.07;
-                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.12;
-                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.17;
-                } else {
-                    descuentoTotal = descuentoTotal + monto_base * 0.22;
+            case "Diesel" -> {
+                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.07;
+                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.12;
+                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.17;
+                } else if(num_reparaciones_vehiculo > 9){
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.22;
                 }
             }
-            case "Híbrido" -> {
-                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.10;
-                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.15;
-                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.20;
-                } else {
-                    descuentoTotal = descuentoTotal + monto_base * 0.25;
+            case "Hibrido" -> {
+                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.10;
+                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.15;
+                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.20;
+                } else if (num_reparaciones_vehiculo > 9){
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.25;
                 }
             }
-            case "Eléctrico" -> {
-                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.08;
-                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.13;
-                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
-                    descuentoTotal = descuentoTotal + monto_base * 0.18;
-                } else {
-                    descuentoTotal = descuentoTotal + monto_base * 0.23;
+            case "Electrico" -> {
+                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.08;
+                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.13;
+                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.18;
+                } else if (num_reparaciones_vehiculo > 9){
+                    descuentoTotal = descuentoTotal + reparacion.getMonto_total_reparacion() * 0.23;
                 }
             }
         }
@@ -115,9 +120,9 @@ public class ReparacionService {
         LocalTime horaInicioDescuento = LocalTime.of(9,0);
         LocalTime horaFinDescuento = LocalTime.of(12,0);
 
-        if (!hora_ingreso.isBefore(horaInicioDescuento) && !hora_ingreso.isAfter(horaFinDescuento)) {
-            descuentoTotal =  descuentoTotal + monto_base * 0.10;
-        }
+//        if (!reparacion.getHora_ingreso().isBefore(horaInicioDescuento) && !reparacion.getHora_ingreso().isAfter(horaFinDescuento)) {
+//            descuentoTotal =  descuentoTotal + reparacion.getMonto_total_reparacion() * 0.10;
+//        }
         // -------------------------------
 
         //Descuento por bonos
@@ -135,44 +140,44 @@ public class ReparacionService {
 //        // Descuento por num de reparaciones
 //        switch (tipo_motor) {
 //            case "Gasolina" -> {
-//                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
+//                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.05;
-//                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
+//                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.10;
-//                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
+//                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.15;
 //                } else {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.20;
 //                }
 //            }
 //            case "Diésel" -> {
-//                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
+//                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.07;
-//                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
+//                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.12;
-//                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
+//                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.17;
 //                } else {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.22;
 //                }
 //            }
 //            case "Híbrido" -> {
-//                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
+//                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.10;
-//                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
+//                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.15;
-//                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
+//                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.20;
 //                } else {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.25;
 //                }
 //            }
 //            case "Eléctrico" -> {
-//                if (vehiculo.getNum_reparaciones() == 1 || vehiculo.getNum_reparaciones() == 2) {
+//                if (num_reparaciones_vehiculo == 1 || num_reparaciones_vehiculo == 2) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.08;
-//                } else if (vehiculo.getNum_reparaciones() >= 3 && vehiculo.getNum_reparaciones() <= 5) {
+//                } else if (num_reparaciones_vehiculo >= 3 && num_reparaciones_vehiculo <= 5) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.13;
-//                } else if (vehiculo.getNum_reparaciones() >= 6 && vehiculo.getNum_reparaciones() <= 9) {
+//                } else if (num_reparaciones_vehiculo >= 6 && num_reparaciones_vehiculo <= 9) {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.18;
 //                } else {
 //                    descuentoTotal = descuentoTotal + monto_base * 0.23;
@@ -198,9 +203,16 @@ public class ReparacionService {
 //    }
 
 
-    private double calcularRecargos(double monto_base, Integer kilometraje, Integer ano_fabricacion, String tipo_vehiculo, LocalDateTime fecha_salida, LocalDateTime fecha_retiro_vehiculo) {
+    public double calcularRecargos(ReparacionEntity reparacion) throws Exception {
 
         double recargoTotal = 0;
+
+        Integer ano_fabricacion = vehiculoService.obtenerVehiculoPorPatente(reparacion.getNum_patente()).getAno_fabricacion();
+        String tipo_vehiculo = vehiculoService.obtenerVehiculoPorPatente(reparacion.getNum_patente()).getTipo_vehiculo();
+        Integer kilometraje = vehiculoService.obtenerVehiculoPorPatente(reparacion.getNum_patente()).getKilometraje();
+
+        LocalDateTime fecha_salida = reparacion.getFecha_salida();
+        LocalDateTime fecha_retiro_vehiculo = reparacion.getFecha_retiro_vehiculo();
 
         // Recargo por kilometraje y antigüedad
 
@@ -211,54 +223,54 @@ public class ReparacionService {
         int antiguedad = periodo_antiguedad.getYears();
 
         switch (tipo_vehiculo) {
-            case "Sedán", "Hatchback" -> {
+            case "Sedan", "Hatchback" -> {
                 // Antigüedad
                 if (antiguedad >= 0 && antiguedad <= 5) {
-                    recargoTotal = recargoTotal + monto_base * 0.00;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.00;
                 }if (antiguedad >= 6 && antiguedad <= 10) {
-                    recargoTotal = recargoTotal + monto_base * 0.05;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.05;
                 }if (antiguedad >= 11 && antiguedad <= 15) {
-                    recargoTotal = recargoTotal + monto_base * 0.09;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.09;
                 }if (antiguedad >= 16){
-                    recargoTotal = recargoTotal + monto_base * 0.15;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.15;
                 }
 
                 //Kilometraje
                 if (kilometraje >= 0 && kilometraje <= 5000) {
-                    recargoTotal = recargoTotal + monto_base * 0.00;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.00;
                 }if (kilometraje >= 5001 && kilometraje <= 12000) {
-                    recargoTotal = recargoTotal + monto_base * 0.03;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.03;
                 }if (kilometraje >= 12001 && kilometraje <= 25000) {
-                    recargoTotal = recargoTotal + monto_base * 0.07;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.07;
                 }if (kilometraje >= 25001 && kilometraje <= 40000){
-                    recargoTotal = recargoTotal + monto_base * 0.12;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.12;
                 }if (kilometraje >= 40001){
-                    recargoTotal = recargoTotal + monto_base * 0.20;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.20;
                 }
             }
             case "SUV", "Pickup", "Furgoneta" -> {
                 // Antigüedad
                 if (antiguedad >= 0 && antiguedad <= 5) {
-                    recargoTotal = recargoTotal + monto_base * 0.00;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.00;
                 }if (antiguedad >= 6 && antiguedad <= 10) {
-                    recargoTotal = recargoTotal + monto_base * 0.07;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.07;
                 }if (antiguedad >= 11 && antiguedad <= 15) {
-                    recargoTotal = recargoTotal + monto_base * 0.11;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.11;
                 }if (antiguedad >= 16){
-                    recargoTotal = recargoTotal + monto_base * 0.20;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.20;
                 }
 
                 //Kilometraje
                 if (kilometraje >= 0 && kilometraje <= 5000) {
-                    recargoTotal = recargoTotal + monto_base * 0.00;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.00;
                 }if (kilometraje >= 5001 && kilometraje <= 12000) {
-                    recargoTotal = recargoTotal + monto_base * 0.05;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.05;
                 }if (kilometraje >= 12001 && kilometraje <= 25000) {
-                    recargoTotal = recargoTotal + monto_base * 0.09;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.09;
                 }if (kilometraje >= 25001 && kilometraje <= 40000){
-                    recargoTotal = recargoTotal + monto_base * 0.12;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.12;
                 }if (kilometraje >= 40000){
-                    recargoTotal = recargoTotal + monto_base * 0.20;
+                    recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * 0.20;
                 }
             }
         }
@@ -272,7 +284,7 @@ public class ReparacionService {
 
         if (horas_retraso > 24){
             long dias_retraso = horas_retraso / 24;
-            recargoTotal = recargoTotal + (dias_retraso * 0.05);
+            recargoTotal = recargoTotal + reparacion.getMonto_total_reparacion() * (dias_retraso * 0.05);
         }
         // -------------------------------------------------
 
